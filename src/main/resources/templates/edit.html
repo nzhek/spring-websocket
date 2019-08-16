@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    <script src="/js/script.js"></script>
+</head>
+<body>
+Edit
+<p th:text="'Hello, ' + ${name} + '!'"/>
+
+
+<div id="main-content" class="container">
+    <form class="form-inline">
+        <input type="hidden" name="user_id" id="user_id" value="1231">
+
+        <div class="form-group">
+            <label for="name">What is your name?</label>
+            <input type="text" id="name" name="name" th:value="' + ${name} + '" class="form-control"
+                   placeholder="Your name here...">
+        </div>
+
+        <button id="send_update_user" class="btn btn-default" type="submit">send_update_user</button>
+    </form>
+
+    <form class="form-inline">
+        <div class="form-group">
+            <label for="image">Select an image and hit send:</label>
+            <input type="file" id="image" accept="image/*"/>
+        </div>
+
+        <button id="send_image" class="btn btn-default" type="submit">send_image</button>
+    </form>
+
+    <div class="row">
+        <div class="col-md-12">
+            <table id="conversation" class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Greetings</th>
+                </tr>
+                </thead>
+                <tbody id="greetings">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>
