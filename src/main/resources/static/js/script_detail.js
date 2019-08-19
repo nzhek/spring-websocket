@@ -2,15 +2,17 @@ stompClient.connect({}, function (frame) {
 
     stompClient.subscribe('/topic/user', function (users) {
         var data = JSON.parse(users.body);
-        showUserDetail(data);
-        stompClient.send('/app/photos', {}, JSON.stringify({name: '', user_id: user_id}));
+        if (data !== null && data.id === user_id) {
+            showUserDetail(data);
+            stompClient.send('/app/photos', {}, JSON.stringify({name: '', user_id: user_id}));
+        }
     });
     stompClient.send('/app/user', {}, JSON.stringify({name: '', user_id: user_id}));
 
     stompClient.subscribe('/topic/user/delete', function (user) {
-        // var data = JSON.parse(user.body);
-        if (user.body !== null) {
-            $("#message").html("User delete with id: " + user.body.id);
+        var data = JSON.parse(user.body);
+        if (data !== null && data.id === user_id) {
+            $("#message").html("User delete with id: " + data.id);
             $('#detail_info').html('User deleted');
             $('#main-content').html('');
         }
@@ -18,12 +20,16 @@ stompClient.connect({}, function (frame) {
 
     stompClient.subscribe('/topic/user/status/update', function (user) {
         var data = JSON.parse(user.body);
-        showUserDetail(data);
+        if (data !== undefined && data.id === user_id) {
+            showUserDetail(data);
+        }
     });
 
     stompClient.subscribe('/topic/photos', function (greeting) {
         var data = JSON.parse(greeting.body);
-        showGreeting(data);
+        if (data.length && data[0].user_id === user_id) {
+            showGreeting(data);
+        }
     });
 
 });

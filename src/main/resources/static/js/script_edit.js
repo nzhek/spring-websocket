@@ -2,28 +2,34 @@ stompClient.connect({}, function (frame) {
 
     stompClient.subscribe('/topic/user', function (users) {
         var data = JSON.parse(users.body);
-        showUserEdit(data.name);
-        stompClient.send('/app/photos', {}, JSON.stringify({name: '', user_id: user_id}));
+        if (data !== null && data.id === user_id) {
+            showUserEdit(data.name);
+            stompClient.send('/app/photos', {}, JSON.stringify({name: '', user_id: user_id}));
+        }
     });
 
     stompClient.subscribe('/topic/photos', function (greeting) {
         var data = JSON.parse(greeting.body);
-        showGreeting(data);
+        if (data.length && data[0].user_id === user_id) {
+            showGreeting(data);
+        }
     });
 
     stompClient.subscribe('/topic/user/status/update', function (user) {
         var data = JSON.parse(user.body);
-        $("#message").html("User update: " + user.body);
-        if (data.name !== null) {
-            stompClient.send("/app/users"); // обновляем список
-        } else {
-            $("#message").html("Error ... incorrect value");
+        if (data !== null && data.id === user_id) {
+            $("#message").html("User update: " + user.body);
+            if (data.name !== null) {
+                stompClient.send("/app/users"); // обновляем список
+            } else {
+                $("#message").html("Error ... incorrect value");
+            }
         }
     });
 
     stompClient.subscribe('/topic/user/delete', function (user) {
-        // var data = JSON.parse(user.body);
-        if (user.body !== null) {
+        var data = JSON.parse(user.body);
+        if (data !== null && data.id === user_id) {
             $("#message").html("User delete with id: " + user.body.id);
             $('#main-content').html("User deleted");
         }
@@ -35,15 +41,11 @@ stompClient.connect({}, function (frame) {
 
     stompClient.send('/app/user', {}, JSON.stringify({name: '', user_id: user_id}));
 
-    stompClient.subscribe('/topic/photo', function (greeting) {
-        if (greeting.body) {
+    stompClient.subscribe('/topic/photo', function (user) {
+        var data = JSON.parse(user.body);
+        if (data !== null && data.user !== null && data.user.id === user_id) {
             stompClient.send('/app/photos', {}, JSON.stringify({name: '', user_id: user_id}));
         }
-    });
-
-    stompClient.subscribe('/topic/photos', function (greeting) {
-        var data = JSON.parse(greeting.body);
-        showGreeting(data);
     });
 
 });
