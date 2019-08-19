@@ -8,12 +8,30 @@
             crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
-    <script src="/js/script.js"></script>
+    <script src="/js/script_main.js"></script>
+    <script src="/js/script_detail.js"></script>
 </head>
 <body>
 Detail
 
 <div id="detail_info"></div>
+
+<div id="main-content">
+    <div class="row">
+        <div class="col-md-12">
+            <table id="conversation" class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Greetings</th>
+                </tr>
+                </thead>
+                <tbody id="greetings">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
 
 <script>
     var user_id = [[${name}]];

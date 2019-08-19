@@ -7,5 +7,4 @@ public class UserMessage {
     public String getName() {
         return name;
     }
-
 }

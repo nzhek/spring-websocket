@@ -25,6 +25,16 @@ public class UserService {
         return userRepository.save(new User(name));
     }
 
+    public User update(User user){
+        if (userRepository.existsById(user.getId())){
+            User u = userRepository.findById(user.getId()).orElse(null);
+            u.setName(user.getName());
+            userRepository.save(u);
+            return u;
+        }
+        return null;
+    }
+
     public Boolean delete(Long id) {
         userRepository.deleteById(id);
         return !userRepository.existsById(id);
